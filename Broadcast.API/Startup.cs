@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Broadcast.API.Business;
+using Broadcast.API.Business.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +27,17 @@ namespace Broadcast.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // business service ve interface DI container tanimlari
+            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IBroadcastService, BroadcastService>();
+            services.AddTransient<IBroadcastTypeService, BroadcastTypeService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IProfileDetailService, ProfileDetailService>();
+            services.AddTransient<IProfileEmployeeService, ProfileEmployeeService>();
+            services.AddTransient<ISexService, SexService>();
+
+            services.AddSingleton<IConfiguration>(Configuration); //add Configuration to our services collection
             services.AddControllers();
         }
 
