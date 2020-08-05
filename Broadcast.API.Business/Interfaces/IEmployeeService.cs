@@ -10,7 +10,7 @@ namespace Broadcast.API.Business.Interfaces
     {
         PaginatedList<EmployeeWithDetail> GetAllPaginatedWithDetailBySearchFilter(EmployeeSearchFilter searchFilter);
         EmployeeWithDetail GetByIdWithDetail(int id);
-
-
+        int Add(Data.Entity.Employee record);
+        int Update(Data.Entity.Employee record);
     }
 }

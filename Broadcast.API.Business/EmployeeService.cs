@@ -114,6 +114,26 @@ namespace Broadcast.API.Business
             return result;
         }
 
+        public int Add(Data.Entity.Employee record)
+        {
+            int result = 0;
+            using (AppDBContext dbContext = new AppDBContext(_config))
+            {
+                dbContext.Entry(record).State = EntityState.Added;
+                result = dbContext.SaveChanges();
+            }
+            return result;
+        }
 
+        public int Update(Data.Entity.Employee record)
+        {
+            int result = 0;
+            using (AppDBContext dbContext = new AppDBContext(_config))
+            {
+                dbContext.Entry(record).State = EntityState.Modified;
+                result = dbContext.SaveChanges();
+            }
+            return result;
+        }
     }
 }
