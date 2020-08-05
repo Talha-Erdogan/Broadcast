@@ -10,7 +10,6 @@ namespace Broadcast.API.Data.Entity
     public class Employee
     {
         [Key]
-        [StringLength(50)]
         public int ID { get; set; }
 
         [StringLength(50)]
