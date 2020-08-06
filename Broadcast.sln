@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Broadcast.Web", "Broadcast.Web\Broadcast.Web.csproj", "{E5AF8A29-41CA-490B-AA43-AA9B9F11F7C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Broadcast.Web", "Broadcast.Web\Broadcast.Web.csproj", "{E5AF8A29-41CA-490B-AA43-AA9B9F11F7C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Broadcast.API", "Broadcast.API\Broadcast.API.csproj", "{BD8C62FC-44C8-4FE0-8795-54ADB00D66BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Broadcast.API", "Broadcast.API\Broadcast.API.csproj", "{BD8C62FC-44C8-4FE0-8795-54ADB00D66BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Broadcast.API.Data", "Broadcast.API.Data\Broadcast.API.Data.csproj", "{2B21C35E-0382-45F7-BC8E-B18182D26A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Broadcast.API.Data", "Broadcast.API.Data\Broadcast.API.Data.csproj", "{2B21C35E-0382-45F7-BC8E-B18182D26A6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Broadcast.API.Business", "Broadcast.API.Business\Broadcast.API.Business.csproj", "{A2DD8B38-B1A8-4438-9C0E-28C7115B8101}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Broadcast.API.Business", "Broadcast.API.Business\Broadcast.API.Business.csproj", "{A2DD8B38-B1A8-4438-9C0E-28C7115B8101}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Broadcast.Web.Business", "Broadcast.Web.Business\Broadcast.Web.Business.csproj", "{AE8450E1-D364-49B3-B4E8-898469F263A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A2DD8B38-B1A8-4438-9C0E-28C7115B8101}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2DD8B38-B1A8-4438-9C0E-28C7115B8101}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2DD8B38-B1A8-4438-9C0E-28C7115B8101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE8450E1-D364-49B3-B4E8-898469F263A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE8450E1-D364-49B3-B4E8-898469F263A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE8450E1-D364-49B3-B4E8-898469F263A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE8450E1-D364-49B3-B4E8-898469F263A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
