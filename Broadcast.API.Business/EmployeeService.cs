@@ -9,6 +9,7 @@ using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using Broadcast.API.Data.Entity;
 
 namespace Broadcast.API.Business
 {
@@ -84,6 +85,18 @@ namespace Broadcast.API.Business
             }
 
             return resultList;
+        }
+
+        public Employee GetById(int id)
+        {
+            Employee result = null;
+
+            using (AppDBContext dbContext = new AppDBContext(_config))
+            {
+                result = dbContext.Employee.Where(a => a.ID == id ).AsNoTracking().SingleOrDefault();
+            }
+
+            return result;
         }
 
         public EmployeeWithDetail GetByIdWithDetail(int id)
