@@ -49,11 +49,17 @@ namespace Broadcast.API
                 app.UseDeveloperExceptionPage();
             }
 
+            //Adding static file middleware
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            //config helper'ý configure etmek için
+            Common.ConfigHelper.Configure(Configuration);
 
             app.UseEndpoints(endpoints =>
             {

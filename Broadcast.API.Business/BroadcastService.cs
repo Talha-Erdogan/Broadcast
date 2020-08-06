@@ -67,6 +67,10 @@ namespace Broadcast.API.Business
                     bool _isActive = searchFilter.Filter_IsActive.Value == 1 ? true : false;
                     query = query.Where(r => r.IsActive == _isActive);
                 }
+                if (searchFilter.Filter_ValidationEndDateTime.HasValue)
+                {
+                    query = query.Where(r => r.ValidationEndDateTime.Date == searchFilter.Filter_ValidationEndDateTime.Value.Date);
+                }
 
                 // asnotracking
                 query = query.AsNoTracking();
@@ -148,6 +152,10 @@ namespace Broadcast.API.Business
                 {
                     bool _isActive = searchFilter.Filter_IsActive.Value == 1 ? true : false;
                     query = query.Where(r => r.IsActive == _isActive);
+                }
+                if (searchFilter.Filter_ValidationEndDateTime.HasValue)
+                {
+                    query = query.Where(r => r.ValidationEndDateTime.Date == searchFilter.Filter_ValidationEndDateTime.Value.Date);
                 }
 
                 // asnotracking

@@ -12,5 +12,9 @@
     <ProjectReference Include="..\Broadcast.API.Business\Broadcast.API.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\BroadcastFiles\" />
+  </ItemGroup>
+
 
 </Project>
