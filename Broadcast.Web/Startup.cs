@@ -47,6 +47,7 @@ namespace Broadcast.Web
             services.AddTransient<IProfileDetailService, ProfileDetailService>();
             services.AddTransient<IProfileEmployeeService, ProfileEmployeeService>();
             services.AddTransient<ISexService, SexService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 
 

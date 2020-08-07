@@ -22,7 +22,13 @@ namespace Broadcast.API.Common
                 return _configuration.GetValue<string>("ImageExtension").Split(",").ToList();
             }
         }
-
+        public static string Jwt_Secret
+        {
+            get
+            {
+                return _configuration.GetValue<string>("Jwt:Secret");
+            }
+        }
 
 
     }

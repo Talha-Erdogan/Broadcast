@@ -10,6 +10,7 @@ namespace Broadcast.API.Business.Interfaces
     public interface IEmployeeService
     {
         PaginatedList<EmployeeWithDetail> GetAllPaginatedWithDetailBySearchFilter(EmployeeSearchFilter searchFilter);
+        EmployeeWithDetail GetByUserNameAndPassword(string userName, string password);
         Employee GetById(int id);
         EmployeeWithDetail GetByIdWithDetail(int id);
         int Add(Data.Entity.Employee record);

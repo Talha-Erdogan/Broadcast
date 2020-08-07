@@ -87,6 +87,32 @@ namespace Broadcast.API.Business
             return resultList;
         }
 
+        public EmployeeWithDetail GetByUserNameAndPassword(string userName, string password)
+        {
+            EmployeeWithDetail result = null;
+            using (AppDBContext dbContext = new AppDBContext(_config))
+            {
+                var query = from e in dbContext.Employee
+                            from s in dbContext.Sex.Where(x => x.Id == e.SexId).DefaultIfEmpty()
+                            where e.UserName ==userName && e.Password ==password
+                            select new EmployeeWithDetail()
+                            {
+                                ID = e.ID,
+                                Name = e.Name,
+                                LastName = e.LastName,
+                                SexId = e.SexId,
+                                Email = e.Email,
+                                MobilePhone = e.MobilePhone,
+                                TRNationalId = e.TRNationalId,
+
+                                Sex_NameTR = s == null ? String.Empty : s.NameTR,
+                                Sex_NameEN = s == null ? String.Empty : s.NameEN,
+                            };
+                result = query.AsNoTracking().FirstOrDefault();
+            }
+            return result;
+        }
+
         public Employee GetById(int id)
         {
             Employee result = null;

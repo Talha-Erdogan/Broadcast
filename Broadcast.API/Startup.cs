@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Broadcast.API.Business;
 using Broadcast.API.Business.Interfaces;
+using Broadcast.API.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +37,7 @@ namespace Broadcast.API
             services.AddTransient<IProfileDetailService, ProfileDetailService>();
             services.AddTransient<IProfileEmployeeService, ProfileEmployeeService>();
             services.AddTransient<ISexService, SexService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
 
             services.AddSingleton<IConfiguration>(Configuration); //add Configuration to our services collection
             services.AddControllers();
@@ -60,6 +62,9 @@ namespace Broadcast.API
 
             //config helper'ý configure etmek için
             Common.ConfigHelper.Configure(Configuration);
+
+            // token helper
+            TokenHelper.Configure(app.ApplicationServices);
 
             app.UseEndpoints(endpoints =>
             {
