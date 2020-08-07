@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Broadcast.Web.Business.Common.Enums;
+using Broadcast.Web.Business.Common.Extensions;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using System.Threading;
+using System.Linq;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Broadcast.Web.Business.Common
 {
@@ -29,19 +36,19 @@ namespace Broadcast.Web.Business.Common
             get
             {
 
-                if (CurrentHttpContext.Session.Get<SessionUser>("KibarMobile_CurrentUser") == null)
+                if (CurrentHttpContext.Session.Get<SessionUser>("Broadcast_CurrentUser") == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return CurrentHttpContext.Session.Get<SessionUser>("KibarMobile_CurrentUser");
+                    return CurrentHttpContext.Session.Get<SessionUser>("Broadcast_CurrentUser");
                 }
             }
 
             set
             {
-                CurrentHttpContext.Session.Set<SessionUser>("KibarMobile_CurrentUser", value);
+                CurrentHttpContext.Session.Set<SessionUser>("Broadcast_CurrentUser", value);
             }
         }
 
@@ -115,12 +122,12 @@ namespace Broadcast.Web.Business.Common
         */
 
         public static SessionLoginResult Login(string userName, string userPasswordClear, int loginType,
-            IAuthenticationService authenticationService, IProfileDetailService profileDetailService,
+            IEmployeeService employeeService, IProfileDetailService profileDetailService,
             IProfileEmployeeService profileEmployeeService)
         {
 
 
-            var existUser = authenticationService.Login(userName, userPasswordClear, CurrentLanguageTwoChar);
+            var existUser = employeeService.Login(userName, userPasswordClear, CurrentLanguageTwoChar);
             if (existUser.ResultStatusCode == ResultStatusCodeStatic.Error)
             {
                 return new SessionLoginResult(false, existUser.ResultStatusMessage);
@@ -131,21 +138,11 @@ namespace Broadcast.Web.Business.Common
             currentUser.TRNationalId = existUser.Data.TRNationalId;
             currentUser.Name = existUser.Data.Name;
             currentUser.LastName = existUser.Data.LastName;
-            currentUser.BirthDate = existUser.Data.BirthDate;
-            currentUser.CategoryId = existUser.Data.CategoryId;
-            currentUser.CompanyId = existUser.Data.CompanyId;
-            currentUser.DepartmentId = existUser.Data.DepartmentId;
-            //currentUser.Email = existUser.Data.Email;
-            currentUser.EmployementStart = existUser.Data.EmployementStart;
-            currentUser.LocationId = existUser.Data.LocationId;
-            currentUser.ProfessionId = existUser.Data.ProfessionId;
+            
             currentUser.SexId = existUser.Data.SexId;
-            currentUser.Type = existUser.Data.TypeId;
+            
             currentUser.UserToken = existUser.Data.UserToken;
-            currentUser.NameSurname = existUser.Data.Name + " " + existUser.Data.LastName;
-            //currentUser.UserName = existUser.Data.Email.Substring(0, existUser.Data.Email.IndexOf("@"));//todo: username şimdilik bu şekilde ayarlandı. 
-            //Employees tablosunda guncelleme oldugunda burada da düzelilecek
-            currentUser.UserName = existUser.Data.LdapUserName;
+            
 
             var apiAuthResponse = profileDetailService.GetAllAuthByCurrentUser(existUser.Data.UserToken, CurrentLanguageTwoChar, existUser.Data.ID);
             if (apiAuthResponse.ResultStatusCode != ResultStatusCodeStatic.Success)
@@ -233,7 +230,7 @@ namespace Broadcast.Web.Business.Common
         }
 
 
-        public static bool Logout(IAuthenticationService authenticationService)
+        public static bool Logout(IEmployeeService authenticationService)
         {
             var currentLanguage = SessionHelper.CurrentLanguage;
             var apiResponse = authenticationService.Logout();

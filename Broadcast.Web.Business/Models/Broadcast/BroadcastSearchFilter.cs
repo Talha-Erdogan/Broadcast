@@ -19,6 +19,9 @@ namespace Broadcast.Web.Business.Models.Broadcast
         public string Filter_TitleTR { get; set; }
         public string Filter_TitleEN { get; set; }
         public int? Filter_IsActive { get; set; }
-        public DateTime? Filter_ValidationEndDateTime { get; set; }
+        //public DateTime? Filter_ValidationEndDateTime { get; set; }
+
+        //string ifadesi
+        public string Filter_ValidationEndDateTimeAsString { get; set; }
     }
 }

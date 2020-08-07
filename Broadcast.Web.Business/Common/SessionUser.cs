@@ -8,7 +8,7 @@ namespace Broadcast.Web.Business.Common
     [Serializable]
     public class SessionUser
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string TRNationalId { get; set; }
 
         public string Name { get; set; }

@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Broadcast.Web.Business;
+using Broadcast.Web.Business.Common;
+using Broadcast.Web.Business.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +28,31 @@ namespace Broadcast.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddSingleton<IConfiguration>(Configuration); //add Configuration to our services collection
+
+            // session kullanýmý tanýmý
+            // Adds a default in-memory implementation of IDistributedCache.
+            services.AddDistributedMemoryCache(); //This way ASP.NET Core will use a Memory Cache to store session variables
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+            });
+
+            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IBroadcastService, BroadcastService>();
+            services.AddTransient<IBroadcastTypeService, BroadcastTypeService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IProfileDetailService, ProfileDetailService>();
+            services.AddTransient<IProfileEmployeeService, ProfileEmployeeService>();
+            services.AddTransient<ISexService, SexService>();
+
+
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,11 +69,25 @@ namespace Broadcast.Web
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+
+            app.UseStaticFiles();
+
+
+            // session kullanýmý
+            app.UseSession(); //make sure add this line before UseMvc()
+            // SessionHelper'a HttpContextAccessor nesnesi ataniyor
+            SessionHelper.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+
+
+            //config helper'ý configure etmek için
+
+            ConfigHelper.Configure(Configuration);
 
             app.UseEndpoints(endpoints =>
             {
