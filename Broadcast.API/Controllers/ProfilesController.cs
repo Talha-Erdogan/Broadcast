@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Broadcast.API.Business.Interfaces;
 using Broadcast.API.Business.Models;
 using Broadcast.API.Common.Enums;
+using Broadcast.API.Filters;
 using Broadcast.API.Models;
 using Broadcast.API.Models.Profiles;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace Broadcast.API.Controllers
 
         [Route("")]
         [HttpGet]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_LIST)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_LIST)]
         public IActionResult GetAllPaginatedWithDetail([FromQuery]GetAllPaginatedRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<PaginatedList<Data.Entity.Profile>>() { DisplayLanguage=displayLanguage};
@@ -58,7 +59,7 @@ namespace Broadcast.API.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public IActionResult GetById(int id, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.Profile>() { DisplayLanguage=displayLanguage};
@@ -79,7 +80,7 @@ namespace Broadcast.API.Controllers
         }
 
         [HttpPost]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_ADD)]
         public IActionResult Add([FromBody]AddRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.Profile>();
@@ -118,7 +119,7 @@ namespace Broadcast.API.Controllers
 
         [Route("{Id}")]
         [HttpPut]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_EDIT)]
         public IActionResult Edit(int id, [FromBody]AddRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.Profile>();
@@ -162,7 +163,7 @@ namespace Broadcast.API.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_DELETE)]
         public IActionResult Delete(int id, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.Profile>() { DisplayLanguage=displayLanguage};

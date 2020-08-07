@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Broadcast.API.Business.Interfaces;
 using Broadcast.API.Business.Models;
 using Broadcast.API.Common.Enums;
+using Broadcast.API.Filters;
 using Broadcast.API.Models;
 using Broadcast.API.Models.ProfileEmployees;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +25,7 @@ namespace Broadcast.API.Controllers
 
         [Route("GetAllEmployeePaginatedWithDetail")]
         [HttpGet]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public ApiResponseModel<PaginatedList<Data.Entity.Employee>> GetAllEmployeePaginatedWithDetail([FromQuery]GetAllEmployeePaginatedRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<PaginatedList<Data.Entity.Employee>>() { DisplayLanguage=displayLanguage};
@@ -52,7 +53,7 @@ namespace Broadcast.API.Controllers
 
         [Route("GetAllEmployeeWhichIsNotIncludedPaginatedWithDetail")]
         [HttpGet]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public ApiResponseModel<PaginatedList<Data.Entity.Employee>> GetAllEmployeeWhichIsNotIncludedPaginatedWithDetail([FromQuery]GetAllEmployeeWhichIsNotIncludedPaginatedRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<PaginatedList<Data.Entity.Employee>>() { DisplayLanguage=displayLanguage};
@@ -81,7 +82,7 @@ namespace Broadcast.API.Controllers
 
         [Route("GetAllProfileByCurrentUser")]
         [HttpGet]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public ApiResponseModel<List<Data.Entity.Profile>> GetAllProfileByCurrentUser([FromQuery]GetAllProfileByCurrentUserRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<List<Data.Entity.Profile>>();
@@ -110,7 +111,7 @@ namespace Broadcast.API.Controllers
 
         [Route("")]
         [HttpPost]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public ApiResponseModel<Data.Entity.ProfileEmployee> Add([FromBody]AddRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.ProfileEmployee>();
@@ -144,7 +145,7 @@ namespace Broadcast.API.Controllers
 
         [Route("")]
         [HttpDelete]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public ApiResponseModel<int> DeleteByProfileIdAndAuthId([FromQuery]DeleteByProfileIdAndEmployeeIdRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<int>() {  DisplayLanguage=displayLanguage};

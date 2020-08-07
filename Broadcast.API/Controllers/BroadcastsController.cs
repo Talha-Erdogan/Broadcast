@@ -10,6 +10,8 @@ using Broadcast.API.Business.Models;
 using Broadcast.API.Business.Models.Broadcast;
 using Broadcast.API.Common;
 using Broadcast.API.Common.Enums;
+using Broadcast.API.Common.Model;
+using Broadcast.API.Filters;
 using Broadcast.API.Models;
 using Broadcast.API.Models.Broadcasts;
 using Microsoft.AspNetCore.Hosting;
@@ -33,15 +35,11 @@ namespace Broadcast.API.Controllers
 
         [Route("")]
         [HttpGet]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_BROADCAST_LIST, AuthCodeStatic.PAGE_ANNOUNCEMENT_LIST, AuthCodeStatic.PAGE_NEWS_LIST)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_ANNOUNCEMENT_LIST, AuthCodeStatic.PAGE_NEWS_LIST)]
         [ProducesResponseType(typeof(ApiResponseModel<PaginatedList<BroadcastWithDetail>>), 200)]
         public IActionResult GetAllPaginatedWithDetail([FromQuery] GetAllPaginatedRequestModel requestModel, [FromHeader] string displayLanguage)
         {
             var responseModel = new ApiResponseModel<PaginatedList<BroadcastWithDetail>> { DisplayLanguage = displayLanguage };
-            //TokenModel tokenModel = TokenHelper.DecodeTokenFromRequestHeader(Request);
-            //user bilgilerinden filitre parametreleri eklenir.
-            //var employeeId = tokenModel.EmployeeId;
-
             try
             {
                 var searchFilter = new BroadcastSearchFilter
@@ -78,11 +76,9 @@ namespace Broadcast.API.Controllers
             }
         }
 
-
-
         [Route("{broadcastType}")]
         [HttpGet]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         [ProducesResponseType(typeof(ApiResponseModel<PaginatedList<BroadcastWithDetail>>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponseModel<object>), (int)HttpStatusCode.NotFound)]
         public IActionResult GetByBroadcastType(string broadcastType, [FromQuery]GetAllPaginatedWhichIsActiveRequestModel requestModel, [FromHeader]string displayLanguage)
@@ -136,7 +132,7 @@ namespace Broadcast.API.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         [ProducesResponseType(typeof(ApiResponseModel<Data.Entity.Broadcast>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponseModel<object>), (int)HttpStatusCode.NotFound)]
         public IActionResult GetById(int id, [FromHeader]string displayLanguage)
@@ -178,10 +174,9 @@ namespace Broadcast.API.Controllers
             }
         }
 
-
         [Route("upload-file")]
         [HttpPost]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_NEWS_ADD, AuthCodeStatic.PAGE_ANNOUNCEMENT_ADD)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_NEWS_ADD, AuthCodeStatic.PAGE_ANNOUNCEMENT_ADD)]
         public ApiResponseModel<string> AddBroadcastFiles([FromForm]List<IFormFile> imageFile, [FromHeader]string displayLanguage)
         {
             string imageFilePath = null;
@@ -261,10 +256,14 @@ namespace Broadcast.API.Controllers
 
         [Route("")]
         [HttpPost]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_NEWS_ADD, AuthCodeStatic.PAGE_ANNOUNCEMENT_ADD)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_NEWS_ADD, AuthCodeStatic.PAGE_ANNOUNCEMENT_ADD)]
         public ApiResponseModel<Data.Entity.Broadcast> AddBroadcast([FromBody]AddRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.Broadcast>() {DisplayLanguage=displayLanguage };
+            //user bilgilerinden filitre parametreleri eklenir.
+            TokenModel tokenModel = TokenHelper.DecodeTokenFromRequestHeader(Request);
+            var employeeId = tokenModel.ID;
+
             try
             {
                 var record = new Data.Entity.Broadcast();
@@ -280,7 +279,7 @@ namespace Broadcast.API.Controllers
                 record.ValidationEndDateTime = requestModel.ValidationEndDateTime;
                 record.IsActive = false; // default olarak false yapılır.
                 record.CreatedDateTime = DateTime.Now;
-                record.CreatedBy = requestModel.CreatedBy; // todo: tokendan alınabilir ilerleyen sürecte
+                record.CreatedBy = employeeId; 
                 record.BroadcastTypeId = requestModel.BroadcastTypeId;
 
                 var dbResult = _broadcastService.Add(record);
@@ -326,10 +325,13 @@ namespace Broadcast.API.Controllers
 
         [Route("{id:int}")]
         [HttpPut]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_NEWS_EDIT, AuthCodeStatic.PAGE_ANNOUNCEMENT_EDIT)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_NEWS_EDIT, AuthCodeStatic.PAGE_ANNOUNCEMENT_EDIT)]
         public ApiResponseModel<Data.Entity.Broadcast> EditBroadcastWithDetail(int id, [FromBody]AddRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.Broadcast>() {  DisplayLanguage=displayLanguage};
+            //user bilgilerinden filitre parametreleri eklenir.
+            TokenModel tokenModel = TokenHelper.DecodeTokenFromRequestHeader(Request);
+            var employeeId = tokenModel.ID;
             try
             {
                 var broadcast = _broadcastService.GetById(id);
@@ -357,7 +359,7 @@ namespace Broadcast.API.Controllers
                 record.VideoFileUrl = requestModel.VideoFileUrl;
                 record.ValidationEndDateTime = requestModel.ValidationEndDateTime;
                 record.ModifiedDateTime = DateTime.Now;
-                record.ModifiedBy = requestModel.ModifiedBy; // todo: tokendan alınabilir ilerleyen sürecte
+                record.ModifiedBy = employeeId;
 
                 var dbResult = _broadcastService.Update(record);
                 if (dbResult > 0)
@@ -404,6 +406,9 @@ namespace Broadcast.API.Controllers
         public IActionResult UpdateStatus(int id, UpdateStatusRequestModel status, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Data.Entity.Broadcast> { DisplayLanguage = displayLanguage };
+            //user bilgilerinden filitre parametreleri eklenir.
+            TokenModel tokenModel = TokenHelper.DecodeTokenFromRequestHeader(Request);
+            var employeeId = tokenModel.ID;
             try
             {
                 var record = _broadcastService.GetById(id);
@@ -417,8 +422,8 @@ namespace Broadcast.API.Controllers
 
                 // Set record status info
                 record.IsActive = status.IsActive;
-                //record.ModifiedBy = ; //todo: token bilgisinden alınacak
-                //record.ModifiedDateTime = DateTime.Now;
+                record.ModifiedBy = employeeId; //todo: token bilgisinden alınacak
+                record.ModifiedDateTime = DateTime.Now;
 
                 // Update record
                 var dbResult = _broadcastService.Update(record);

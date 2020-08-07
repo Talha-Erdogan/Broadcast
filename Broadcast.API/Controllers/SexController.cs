@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Broadcast.API.Business.Interfaces;
 using Broadcast.API.Common.Enums;
+using Broadcast.API.Filters;
 using Broadcast.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace Broadcast.API.Controllers
             _sexService = sexService;
         }
 
+        [Route("")]
         [HttpGet]
         //[TokenAuthorizeFilter] // sadece oturum acilma kontrolu yapilir
         public IActionResult GetSex([FromHeader]string displayLanguage)

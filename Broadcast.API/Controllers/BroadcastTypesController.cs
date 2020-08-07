@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Broadcast.API.Business.Interfaces;
 using Broadcast.API.Common.Enums;
+using Broadcast.API.Filters;
 using Broadcast.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace Broadcast.API.Controllers
         }
 
         [HttpGet]
-        //[TokenAuthorizeFilter] // sadece oturum acilma kontrolu yapilir
+        [TokenAuthorizeFilter] // sadece oturum acilma kontrolu yapilir
         public IActionResult GetBroadcastTypes([FromHeader]string displayLanguage)
         {
             ApiResponseModel<List<Data.Entity.BroadcastType>> responseModel = new ApiResponseModel<List<Data.Entity.BroadcastType>>() { DisplayLanguage =displayLanguage};

@@ -6,6 +6,7 @@ using Broadcast.API.Business.Interfaces;
 using Broadcast.API.Business.Models;
 using Broadcast.API.Common.Enums;
 using Broadcast.API.Data.Entity;
+using Broadcast.API.Filters;
 using Broadcast.API.Models;
 using Broadcast.API.Models.Employees;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace Broadcast.API.Controllers
 
         [Route("")]
         [HttpGet]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_EMPLOYEE_LIST)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_EMPLOYEE_LIST)]
         public IActionResult GetAllPaginatedWithDetail([FromQuery]GetAllPaginatedRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<PaginatedList<Business.Models.Employee.EmployeeWithDetail>>() { DisplayLanguage = displayLanguage};
@@ -55,7 +56,7 @@ namespace Broadcast.API.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        //[TokenAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public IActionResult GetById(int id, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Business.Models.Employee.EmployeeWithDetail>();
@@ -83,7 +84,7 @@ namespace Broadcast.API.Controllers
         }
 
         [HttpPost]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_EMPLOYEE_ADD)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_EMPLOYEE_ADD)]
         public IActionResult Add([FromBody]AddRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Employee>();
@@ -127,7 +128,7 @@ namespace Broadcast.API.Controllers
 
         [Route("{Id}")]
         [HttpPut]
-        //[TokenAuthorizeFilter(AuthCodeStatic.PAGE_EMPLOYEE_EDIT)]
+        [TokenAuthorizeFilter(AuthCodeStatic.PAGE_EMPLOYEE_EDIT)]
         public IActionResult Edit(int id, [FromBody]AddRequestModel requestModel, [FromHeader]string displayLanguage)
         {
             var responseModel = new ApiResponseModel<Employee>() {  DisplayLanguage=displayLanguage};
