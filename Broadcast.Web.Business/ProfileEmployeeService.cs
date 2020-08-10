@@ -56,7 +56,7 @@ namespace Broadcast.Web.Business
             }
             return result;
         }
-        public ApiResponseModel<List<Business.Models.Profile.Profile>> GetAllProfileByCurrentUser(string userToken, string displayLanguage, string employeeId)
+        public ApiResponseModel<List<Business.Models.Profile.Profile>> GetAllProfileByCurrentUser(string userToken, string displayLanguage, int employeeId)
         {
             ApiResponseModel<List<Business.Models.Profile.Profile>> result = new ApiResponseModel<List<Business.Models.Profile.Profile>>();
             //todo: portal api'den çekme işlemi olacak

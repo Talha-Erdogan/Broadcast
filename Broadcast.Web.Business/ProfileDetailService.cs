@@ -13,7 +13,7 @@ namespace Broadcast.Web.Business
 {
     public class ProfileDetailService : IProfileDetailService
     {
-        public ApiResponseModel<List<Business.Models.Auth.Auth>> GetAllAuthByCurrentUser(string userToken, string displayLanguage, string employeeId)
+        public ApiResponseModel<List<Business.Models.Auth.Auth>> GetAllAuthByCurrentUser(string userToken, string displayLanguage, int employeeId)
         {
             ApiResponseModel<List<Business.Models.Auth.Auth>> result = new ApiResponseModel<List<Business.Models.Auth.Auth>>();
 

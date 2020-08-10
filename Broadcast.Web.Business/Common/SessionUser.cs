@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Broadcast.Web.Business.Models.Auth;
+using Broadcast.Web.Business.Models.Profile;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,7 +19,7 @@ namespace Broadcast.Web.Business.Common
 
         public string Email { get; set; }
 
-        public string SexId { get; set; }
+        public int SexId { get; set; }
 
         public string UserToken { get; set; }
 

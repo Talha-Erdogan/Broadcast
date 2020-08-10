@@ -9,6 +9,7 @@ using System.Threading;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Broadcast.Web.Business.Interfaces;
 
 namespace Broadcast.Web.Business.Common
 {
@@ -57,7 +58,7 @@ namespace Broadcast.Web.Business.Common
             get
             {
                 //if (CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.TID))
-                if (CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.ID))
+                if (CurrentUser != null && CurrentUser.ID>0)
                 {
                     return true;
                 }
@@ -121,13 +122,13 @@ namespace Broadcast.Web.Business.Common
         public static SessionLoginResult Login(string userRegNum, string userPasswordClear, bool isWindowsAuthentication, IUserService userService, IBshCasAuthService bshCasAuthService, ICustomAppUserService customAppUserService, IBshCasProfileService bshCasProfileService, IDepartmentService departmentService)
         */
 
-        public static SessionLoginResult Login(string userName, string userPasswordClear, int loginType,
-            IEmployeeService employeeService, IProfileDetailService profileDetailService,
+        public static SessionLoginResult Login(string userName, string userPasswordClear, 
+            IAuthenticationService authenticationService, IProfileDetailService profileDetailService,
             IProfileEmployeeService profileEmployeeService)
         {
 
 
-            var existUser = employeeService.Login(userName, userPasswordClear, CurrentLanguageTwoChar);
+            var existUser = authenticationService.Login(userName, userPasswordClear, CurrentLanguageTwoChar);
             if (existUser.ResultStatusCode == ResultStatusCodeStatic.Error)
             {
                 return new SessionLoginResult(false, existUser.ResultStatusMessage);
@@ -230,19 +231,15 @@ namespace Broadcast.Web.Business.Common
         }
 
 
-        public static bool Logout(IEmployeeService authenticationService)
+        public static bool Logout()
         {
             var currentLanguage = SessionHelper.CurrentLanguage;
-            var apiResponse = authenticationService.Logout();
             CurrentHttpContext.Session.Clear();
-            //CurrentHttpContext.Session.RemoveAll();
             foreach (var item in CurrentHttpContext.Session.Keys)
             {
                 CurrentHttpContext.Session.Remove(item);
             }
-
             SessionHelper.CurrentLanguage = currentLanguage;
-
             return true;
         }
 
