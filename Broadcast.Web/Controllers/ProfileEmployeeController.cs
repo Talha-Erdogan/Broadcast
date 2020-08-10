@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Broadcast.Web.Business.Common;
 using Broadcast.Web.Business.Common.Enums;
+using Broadcast.Web.Business.Enums;
 using Broadcast.Web.Business.Interfaces;
 using Broadcast.Web.Business.Models;
 using Broadcast.Web.Business.Models.ProfileEmployee;
+using Broadcast.Web.Filters;
 using Broadcast.Web.Models.ProfileEmployee;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,7 +29,7 @@ namespace Broadcast.Web.Controllers
         }
 
 
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILEEMPLOYEE_BATCHEDIT)]
+        [AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILEEMPLOYEE_BATCHEDIT)]
         public ActionResult BatchEdit()
         {
             BatchEditViewModel model = new BatchEditViewModel();
@@ -49,7 +51,7 @@ namespace Broadcast.Web.Controllers
         }
 
         [HttpPost]
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILEEMPLOYEE_BATCHEDIT)]
+        [AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILEEMPLOYEE_BATCHEDIT)]
         public ActionResult BatchEdit(BatchEditViewModel model)
         {
             if (!ModelState.IsValid)

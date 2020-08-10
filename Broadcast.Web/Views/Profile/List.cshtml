@@ -1,4 +1,5 @@
 ﻿@using Broadcast.Web.Business.Common
+@using Broadcast.Web.Business.Enums
 @using Broadcast.Web.Controllers
 
 @model Broadcast.Web.Models.Profile.ListViewModel
@@ -26,7 +27,7 @@
                             @Html.HiddenFor(m => m.CurrentPage, new { @id = "hiddenCurrentPage" });
                             @Html.HiddenFor(m => m.SortOn, new { @id = "hiddenSortOn" })
                             @Html.HiddenFor(m => m.SortDirection, new { @id = "hiddenSortDirection" })
-                           
+
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label"> Code </label>
                                 <div class="col-md-4">
@@ -75,6 +76,11 @@
                     <table class="table table-responsive-sm table-bordered table-striped table-sm">
                         <thead>
                             <tr>
+
+                                @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_PROFILE_EDIT))
+                                {
+                                    <th>*</th>
+                                }
                                 <th>
                                     <a href="javascript:void(0)" onclick="ClickSorting('Code','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
                                         Code
@@ -87,7 +93,7 @@
                                         }
                                     </a>
                                 </th>
-                               
+
                                 <th>
                                     <a href="javascript:void(0)" onclick="ClickSorting('NameTR','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
                                         Name TR
@@ -121,7 +127,13 @@
                             @foreach (var item in Model.DataList.Items)
                             {
                                 <tr>
-                                    <td><a href="~/Profile/Edit/@item.Id">@item.Code</a></td>
+                                    @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_PROFILE_EDIT))
+                                    {
+                                        <td>
+                                            <a class="btn btn-sm btn-danger" href="~/Profile/Edit/@item.Id">Edit</a>
+                                        </td>
+                                    }
+                                    <td>@item.Code</td>
                                     <td>@item.NameTR</td>
                                     <td>@item.NameEN</td>
                                 </tr>
