@@ -1,56 +1,51 @@
 ﻿@using Broadcast.Web.Business.Common
-@using Broadcast.Web.Business.Enums
 @using Broadcast.Web.Controllers
 
-@model Broadcast.Web.Models.Auth.ListViewModel
+@model Broadcast.Web.Models.Profile.ListViewModel
 
 @{
-    ViewData["Title"] = "Auth List";
+    ViewData["Title"] = "Profile List";
 }
 
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Auth List
-
-                @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_AUTH_ADD))
-                {
-                    <span>- </span><a class="btn btn-sm btn-primary" href="~/Auth/Add"> New Record</a>
-                }
+                <i class="fa fa-align-justify"></i> Profile List
+                - <a class="btn btn-sm btn-primary" href="~/Profile/Add"> New Record </a>
             </div>
             <div class="card-body">
 
                 <div class="row">
                     <div class="col-lg-12">
 
-                        @using (Html.BeginForm("List", "Auth", FormMethod.Post, new { @class = "form-horizontal input-sm", @id = "filterForm" }))
+                        @using (Html.BeginForm("List", "Profile", FormMethod.Post, new { @class = "form-horizontal input-sm", @id = "filterForm" }))
                         {
                             <!-- form get'te submit yapilirken page bilgisi ve siralama bilgisinin tutulmasi icin -->
                             @Html.HiddenFor(m => m.PageSize, new { @id = "hiddenPageSize" });
                             @Html.HiddenFor(m => m.CurrentPage, new { @id = "hiddenCurrentPage" });
                             @Html.HiddenFor(m => m.SortOn, new { @id = "hiddenSortOn" })
                             @Html.HiddenFor(m => m.SortDirection, new { @id = "hiddenSortDirection" })
-
+                           
                             <div class="form-group row">
+                                <label class="col-md-2 col-form-label"> Code </label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(m => m.Filter.Filter_Code, new { @class = "form-control form-control-sm" })
+                                    @Html.ValidationMessageFor(m => m.Filter.Filter_Code, null, new { @class = "help-block text-danger" })
+                                </div>
+
                                 <label class="col-md-2 col-form-label">Name TR</label>
                                 <div class="col-md-4">
                                     @Html.TextBoxFor(m => m.Filter.Filter_NameTR, new { @class = "form-control form-control-sm" })
                                     @Html.ValidationMessageFor(m => m.Filter.Filter_NameTR, null, new { @class = "help-block text-danger" })
                                 </div>
+                            </div>
 
+                            <div class="form-group row">
                                 <label class="col-md-2 col-form-label">Name EN</label>
                                 <div class="col-md-4">
                                     @Html.TextBoxFor(m => m.Filter.Filter_NameEN, new { @class = "form-control form-control-sm" })
                                     @Html.ValidationMessageFor(m => m.Filter.Filter_NameEN, null, new { @class = "help-block text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-md-2 col-form-label">Code</label>
-                                <div class="col-md-4">
-                                    @Html.TextBoxFor(m => m.Filter.Filter_Code, new { @class = "form-control form-control-sm" })
-                                    @Html.ValidationMessageFor(m => m.Filter.Filter_Code, null, new { @class = "help-block text-danger" })
                                 </div>
                             </div>
 
@@ -62,13 +57,15 @@
                                     <hr />
                                 </div>
                             </div>
+
+
                         }
 
                     </div>
                 </div>
 
                 <div class="text-left small">
-                    Total Count: @Model.DataList.TotalCount Displaying Records: @Model.DataList.From - @Model.DataList.To
+                    Total Record: @Model.DataList.TotalCount Displaying Records: @Model.DataList.From - @Model.DataList.To
                     <div class="float-right">
                         <span>Page Size:</span> @Html.TextBox("txtPageSize", "", new { @class = "form-control form-control-sm d-inline-block onlyNumberEntry", @id = "txtPageSize", @style = " width:50px; height:calc(1.5em + 0.5rem - 2px);" })
                     </div>
@@ -78,10 +75,6 @@
                     <table class="table table-responsive-sm table-bordered table-striped table-sm">
                         <thead>
                             <tr>
-                                @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_AUTH_EDIT))
-                                {
-                                    <th>*</th>
-                                }
                                 <th>
                                     <a href="javascript:void(0)" onclick="ClickSorting('Code','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
                                         Code
@@ -94,7 +87,7 @@
                                         }
                                     </a>
                                 </th>
-
+                               
                                 <th>
                                     <a href="javascript:void(0)" onclick="ClickSorting('NameTR','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
                                         Name TR
@@ -128,15 +121,7 @@
                             @foreach (var item in Model.DataList.Items)
                             {
                                 <tr>
-
-                                    @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_AUTH_EDIT))
-                                    {
-                                        <td>
-                                            <a class="btn btn-sm btn-danger" href="~/Auth/Edit/@item.Id">Edit</a>
-                                        </td>
-                                    }
-
-                                    <td>@item.Code</td>
+                                    <td><a href="~/Profile/Edit/@item.Id">@item.Code</a></td>
                                     <td>@item.NameTR</td>
                                     <td>@item.NameEN</td>
                                 </tr>

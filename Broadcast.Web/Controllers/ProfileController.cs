@@ -5,30 +5,27 @@ using System.Threading.Tasks;
 using Broadcast.Web.Business.Common;
 using Broadcast.Web.Business.Common.Enums;
 using Broadcast.Web.Business.Interfaces;
-using Broadcast.Web.Business.Models.Auth;
-using Broadcast.Web.Models.Auth;
+using Broadcast.Web.Business.Models.Profile;
+using Broadcast.Web.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Broadcast.Web.Controllers
 {
-    public class AuthController : Controller
+    public class ProfileController : Controller
     {
-        private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly IProfileService _profileService;
+        public ProfileController(IProfileService profileService)
         {
-            _authService = authService;
+            _profileService = profileService;
         }
-
-
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_AUTH_LIST)]
+        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_LIST)]
         public ActionResult List()
         {
             ListViewModel model = new ListViewModel();
-            
             model.Filter = new ListFilterViewModel();
             model.CurrentPage = 1;
             model.PageSize = 10;
-            AuthSearchFilter searchFilter = new AuthSearchFilter();
+            ProfileSearchFilter searchFilter = new ProfileSearchFilter();
             searchFilter.CurrentPage = model.CurrentPage.HasValue ? model.CurrentPage.Value : 1;
             searchFilter.PageSize = model.PageSize.HasValue ? model.PageSize.Value : 10;
             searchFilter.SortOn = model.SortOn;
@@ -36,9 +33,7 @@ namespace Broadcast.Web.Controllers
             searchFilter.Filter_Code = model.Filter.Filter_Code;
             searchFilter.Filter_NameTR = model.Filter.Filter_NameTR;
             searchFilter.Filter_NameEN = model.Filter.Filter_NameEN;
-            model.CurrentLanguageTwoChar = SessionHelper.CurrentLanguageTwoChar;
-
-            var apiResponseModel = _authService.GetAllPaginatedWithDetailBySearchFilter(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, searchFilter);
+            var apiResponseModel = _profileService.GetAllPaginatedWithDetailBySearchFilter(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, searchFilter);
             if (apiResponseModel.ResultStatusCode == ResultStatusCodeStatic.Success)
             {
                 model.DataList = apiResponseModel.Data;
@@ -52,7 +47,7 @@ namespace Broadcast.Web.Controllers
             return View(model);
         }
 
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_AUTH_LIST)]
+        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_LIST)]
         [HttpPost]
         public ActionResult List(ListViewModel model)
         {
@@ -72,7 +67,7 @@ namespace Broadcast.Web.Controllers
                 model.PageSize = 10;
             }
 
-            AuthSearchFilter searchFilter = new AuthSearchFilter();
+            ProfileSearchFilter searchFilter = new ProfileSearchFilter();
             searchFilter.CurrentPage = model.CurrentPage.HasValue ? model.CurrentPage.Value : 1;
             searchFilter.PageSize = model.PageSize.HasValue ? model.PageSize.Value : 10;
             searchFilter.SortOn = model.SortOn;
@@ -81,8 +76,7 @@ namespace Broadcast.Web.Controllers
             searchFilter.Filter_NameTR = model.Filter.Filter_NameTR;
             searchFilter.Filter_NameEN = model.Filter.Filter_NameEN;
             model.CurrentLanguageTwoChar = SessionHelper.CurrentLanguageTwoChar;
-
-            var apiResponseModel = _authService.GetAllPaginatedWithDetailBySearchFilter(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, searchFilter);
+            var apiResponseModel = _profileService.GetAllPaginatedWithDetailBySearchFilter(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, searchFilter);
             if (apiResponseModel.ResultStatusCode == ResultStatusCodeStatic.Success)
             {
                 model.DataList = apiResponseModel.Data;
@@ -96,95 +90,89 @@ namespace Broadcast.Web.Controllers
             return View(model);
         }
 
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_AUTH_ADD)]
+        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_ADD)]
         public ActionResult Add()
         {
-            Models.Auth.AddViewModel model = new AddViewModel();
+            Models.Profile.AddViewModel model = new AddViewModel();
             return View(model);
         }
 
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_AUTH_ADD)]
+        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_ADD)]
         [HttpPost]
-        public ActionResult Add(Models.Auth.AddViewModel model)
+        public ActionResult Add(Models.Profile.AddViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            Business.Models.Auth.Auth auth = new Business.Models.Auth.Auth();
-            auth.Code = model.Code;
-            auth.NameTR = model.NameTR;
-            auth.NameEN = model.NameEN;
-            var apiResponseModel = _authService.Add(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, auth);
+            Business.Models.Profile.Profile profile = new Business.Models.Profile.Profile();
+            profile.Code = model.Code;
+            profile.NameTR = model.NameTR;
+            profile.NameEN = model.NameEN;
+            var apiResponseModel = _profileService.Add(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, profile);
             if (apiResponseModel.ResultStatusCode == ResultStatusCodeStatic.Success)
             {
-                return RedirectToAction(nameof(AuthController.List));
+                return RedirectToAction(nameof(ProfileController.List));
             }
             else
             {
-                ViewBag.ErrorMessage = apiResponseModel.ResultStatusMessage != null ? apiResponseModel.ResultStatusMessage : "Kaydedilemedi.";//todo: kulturel olacak NotSaved
+                ViewBag.ErrorMessage = apiResponseModel.ResultStatusMessage != null ? apiResponseModel.ResultStatusMessage : "Not Saved.";
                 ViewBag.ErrorMessageList = apiResponseModel.ErrorMessageList;
                 return View(model);
             }
         }
 
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_AUTH_EDIT)]
+
+        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_EDIT)]
         public ActionResult Edit(int id)
         {
-            Models.Auth.AddViewModel model = new AddViewModel();
-            var apiResponseModel = _authService.GetById(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, id);
+            Models.Profile.AddViewModel model = new AddViewModel();
+            var apiResponseModel = _profileService.GetById(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, id);
             if (apiResponseModel.ResultStatusCode != ResultStatusCodeStatic.Success)
             {
                 ViewBag.ErrorMessage = apiResponseModel.ResultStatusMessage;
                 ViewBag.ErrorMessageList = apiResponseModel.ErrorMessageList;
                 return View(model);
             }
-
-            var auth = apiResponseModel.Data;
-            if (auth == null)
+            var profile = apiResponseModel.Data;
+            if (profile == null)
             {
                 return View("_ErrorNotExist");
             }
-
-            model.Id = auth.Id;
-            model.Code = auth.Code;
-            model.NameTR = auth.NameTR;
-            model.NameEN = auth.NameEN;
+            model.Id = profile.Id;
+            model.Code = profile.Code;
+            model.NameTR = profile.NameTR;
+            model.NameEN = profile.NameEN;
             return View(model);
         }
 
-        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_AUTH_EDIT)]
+        //[AppAuthorizeFilter(AuthCodeStatic.PAGE_PROFILE_EDIT)]
         [HttpPost]
-        public ActionResult Edit(Models.Auth.AddViewModel model)
+        public ActionResult Edit(Models.Profile.AddViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            
-            var apiResponseModel = _authService.GetById(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, model.Id);
+            var apiResponseModel = _profileService.GetById(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, model.Id);
             if (apiResponseModel.ResultStatusCode != ResultStatusCodeStatic.Success)
             {
                 ViewBag.ErrorMessage = apiResponseModel.ResultStatusMessage;
                 ViewBag.ErrorMessageList = apiResponseModel.ErrorMessageList;
                 return View(model);
             }
-
-            var auth = apiResponseModel.Data;
-
-            if (auth == null)
+            var profile = apiResponseModel.Data;
+            if (profile == null)
             {
                 return View("_ErrorNotExist");
             }
-
-            auth.Code = model.Code;
-            auth.NameTR = model.NameTR;
-            auth.NameEN = model.NameEN;
-
+            profile.Code = model.Code;
+            profile.NameTR = model.NameTR;
+            profile.NameEN = model.NameEN;
             if (model.SubmitType == "Edit")
             {
-                var apiEditResponseModel = _authService.Edit(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, auth);
+                var apiEditResponseModel = _profileService.Edit(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, profile);
                 if (apiEditResponseModel.ResultStatusCode != ResultStatusCodeStatic.Success)
                 {
                     ViewBag.ErrorMessage = apiEditResponseModel.ResultStatusMessage != null ? apiEditResponseModel.ResultStatusMessage : "Not Edited"; 
@@ -194,7 +182,7 @@ namespace Broadcast.Web.Controllers
             }
             if (model.SubmitType == "Delete")
             {
-                var apiDeleteResponseModel = _authService.Delete(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, auth.Id);
+                var apiDeleteResponseModel = _profileService.Delete(SessionHelper.CurrentUser.UserToken, SessionHelper.CurrentLanguageTwoChar, profile.Id);
                 if (apiDeleteResponseModel.ResultStatusCode != ResultStatusCodeStatic.Success)
                 {
                     ViewBag.ErrorMessage = apiDeleteResponseModel.ResultStatusMessage != null ? apiDeleteResponseModel.ResultStatusMessage : "Not Deleted"; 
@@ -202,7 +190,8 @@ namespace Broadcast.Web.Controllers
                     return View(model);
                 }
             }
-            return RedirectToAction(nameof(AuthController.List));
+            return RedirectToAction(nameof(ProfileController.List));
         }
+
     }
 }

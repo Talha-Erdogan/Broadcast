@@ -35,6 +35,23 @@ namespace Broadcast.Web.Business
             }
             return result;
         }
+
+        public ApiResponseModel<List<Profile>> GetAll(string userToken, string displayLanguage)
+        {
+            ApiResponseModel<List<Profile>> result = new ApiResponseModel<List<Profile>>();
+            // portal api'den çekme işlemi 
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri(ConfigHelper.ApiUrl);
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
+                httpClient.DefaultRequestHeaders.Add("DisplayLanguage", displayLanguage);
+                HttpResponseMessage response = httpClient.GetAsync(string.Format("v1/Profiles/All")).Result;
+                result = response.Content.ReadAsJsonAsync<ApiResponseModel<List<Profile>>>().Result;
+            }
+            return result;
+        }
         public ApiResponseModel<Profile> GetById(string userToken, string displayLanguage, int id)
         {
             ApiResponseModel<Profile> result = new ApiResponseModel<Profile>();

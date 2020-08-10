@@ -12,6 +12,6 @@ namespace Broadcast.Web.Business.Interfaces
         ApiResponseModel<PaginatedList<Business.Models.Employee.Employee>> GetAllEmployeeWhichIsNotIncludedPaginatedWithDetailBySearchFilter(string userToken, string displayLanguage, ProfileEmployeeSearchFilter searchFilter);
         ApiResponseModel<List<Business.Models.Profile.Profile>> GetAllProfileByCurrentUser(string userToken, string displayLanguage, int employeeId);
         ApiResponseModel<ProfileEmployee> Add(string userToken, string displayLanguage, ProfileEmployee profileEmployee);
-        ApiResponseModel<int> DeleteByProfileIdAndEmployeeId(string userToken, string displayLanguage, int profileId, string employeeId);
+        ApiResponseModel<int> DeleteByProfileIdAndEmployeeId(string userToken, string displayLanguage, int profileId, int employeeId);
     }
 }

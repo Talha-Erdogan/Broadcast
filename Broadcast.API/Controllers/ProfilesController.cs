@@ -56,6 +56,29 @@ namespace Broadcast.API.Controllers
             }
         }
 
+        [Route("All")]
+        [HttpGet]
+        [TokenAuthorizeFilter] 
+        public IActionResult GetAll([FromHeader]string displayLanguage)
+        {
+            ApiResponseModel<List<Data.Entity.Profile>> responseModel = new ApiResponseModel<List<Data.Entity.Profile>>() { DisplayLanguage = displayLanguage };
+            try
+            {
+                var profile = _profileService.GetAll();
+                responseModel.Data = profile;
+                responseModel.ResultStatusCode = ResultStatusCodeStatic.Success;
+                responseModel.ResultStatusMessage = "Success";
+                return Ok(responseModel);
+            }
+            catch (Exception ex)
+            {
+                responseModel.ResultStatusCode = ResultStatusCodeStatic.Error;
+                responseModel.ResultStatusMessage = ex.Message;
+                responseModel.Data = null;
+                return StatusCode(StatusCodes.Status500InternalServerError, responseModel);
+            }
+        }
+
 
         [Route("{id}")]
         [HttpGet]

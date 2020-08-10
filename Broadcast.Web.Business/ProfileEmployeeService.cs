@@ -91,7 +91,7 @@ namespace Broadcast.Web.Business
             }
             return result;
         }
-        public ApiResponseModel<int> DeleteByProfileIdAndEmployeeId(string userToken, string displayLanguage, int profileId, string employeeId)
+        public ApiResponseModel<int> DeleteByProfileIdAndEmployeeId(string userToken, string displayLanguage, int profileId, int employeeId)
         {
             ApiResponseModel<int> result = new ApiResponseModel<int>();
             // api'yi çağırma yapılır, gelen sonuç elde edilir
