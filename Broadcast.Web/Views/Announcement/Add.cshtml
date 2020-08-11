@@ -2,25 +2,24 @@
 @using Broadcast.Web.Business.Enums
 @using Broadcast.Web.Controllers
 
-@model Broadcast.Web.Models.New.AddViewModel
+@model Broadcast.Web.Models.Announcement.AddViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Add";
 }
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <strong>New Edit </strong>
+                <strong>Announcement Add </strong>
             </div>
             <div class="card-body">
 
-                @using (Html.BeginForm("Edit", "New", FormMethod.Post, new { @class = "form-horizontal input-sm", @enctype = "multipart/form-data", id = "formBroadcastAdd" }))
+                @using (Html.BeginForm("Add", "Announcement", FormMethod.Post, new { @class = "form-horizontal input-sm", @enctype = "multipart/form-data", id = "formBroadcastAdd" }))
                 {
                     @Html.HiddenFor(m => m.SessionImageFileName)
                     @Html.HiddenFor(m => m.SessionGuid)
-                    @Html.HiddenFor(m => m.Id)
 
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Title TR</label>
@@ -61,7 +60,6 @@
                                     @Model.SessionImageFileName
                                 </div>
                                
-
                             </div>
                         }
                         else
@@ -72,8 +70,6 @@
                                 <div style="color:red;">
                                     @Model.SessionImageFileName
                                 </div>
-                               
-
                             </div>
                         }
 
@@ -93,15 +89,21 @@
                         </div>
                     </div>
 
+
+
+
+
+
+
                     <div class="form-group row">
                         <div class="col-md-12 text-center mt-4">
                             <button class="btn btn-sm btn-primary" type="submit" id="btnSubmit">
                                 <i class="fa fa-dot-circle-o"></i> Save
                             </button>
                             &nbsp;
-                            @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_LIST))
+                            @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_ANNOUNCEMENT_LIST))
                             {
-                                <a class="btn btn-sm btn-danger" href="~/New/List">
+                                <a class="btn btn-sm btn-danger" href="~/Announcement/List">
                                     <i class="fa fa-ban"></i> Cancel
                                 </a>
                             }
@@ -150,37 +152,47 @@
 
     <script>
 
-        $(document).ready(function () {
-            // başlangıc: date-control class'ı eklenerek -> sayfadaki takvim scriptlerinin çalışması sağlanır.
-            moment.locale("@SessionHelper.CurrentLanguageTwoChar");
-            $.validator.messages.required = 'Is Required';
-            $(".date-control").daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                minYear: parseInt(moment().subtract(10, 'years').format('YYYY'), 10),
-                maxYear: parseInt(moment().add(10, 'years').format('YYYY'), 10),
-                autoUpdateInput: false,
+    $(document).ready(function(){
+        // başlangıc: date-control class'ı eklenerek -> sayfadaki takvim scriptlerinin çalışması sağlanır.
+        moment.locale("@SessionHelper.CurrentLanguageTwoChar");
 
-                timePicker: true,
-                timePicker24Hour: true,
+        $.validator.messages.required = 'Is Required';
 
-                singleClasses: "",
-                locale: {}
-            });
+        $(".date-control").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: parseInt(moment().subtract(10, 'years').format('YYYY'),10),
+            maxYear: parseInt(moment().add(10, 'years').format('YYYY'), 10),
+            autoUpdateInput: false,
 
-            $('.date-control').on('apply.daterangepicker', function (ev, picker) {
-                //$(this).val(picker.startDate.format('L'));
-                "@SessionHelper.CurrentLanguageTwoChar" == "tr" ?
-                    $(this).val(picker.startDate.format('DD.MM.YYYY HH:mm')) :
-                    $(this).val(picker.startDate.format('MM/DD/YYYY HH:mm'));
-            });
+            timePicker: true,
+            timePicker24Hour: true,
 
-
-            $('.date-control').on('cancel.daterangepicker', function (ev, picker) {
-                $(this).val('');
-            });
-            // bitiş: date-control class'ı eklenerek -> sayfadaki takvim scriptlerinin çalışması sağlanır.
+            singleClasses: "",
+            locale: {}
         });
+
+        $('.date-control').on('apply.daterangepicker', function (ev, picker) {
+            "@SessionHelper.CurrentLanguageTwoChar" == "tr" ?
+                $(this).val(picker.startDate.format('DD.MM.YYYY HH:mm')) :
+                $(this).val(picker.startDate.format('MM/DD/YYYY HH:mm'));
+        });
+
+        $('.date-control').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+        // bitiş: date-control class'ı eklenerek -> sayfadaki takvim scriptlerinin çalışması sağlanır.
+
+        $(".onlyNumberEntryForExcludeEmployeeSelectModal").keypress(function (e) {
+            if (e.which == 13) {
+                //$('#filterForm').submit();
+                ExcludeEmployeeSelectModal_LoadDataList();
+            }
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+    }); // end of $(document).ready
 
     //işlem yapılıyor pop-up'ının gösterilmesi (layout'ta)
     function DisplayModalProcessing() {
@@ -197,6 +209,8 @@
         setTimeout(function () {
             $("#modalProcessing").modal("hide");
         }, 600);
-    }
-</script>
+        }
+    </script>
 }
+
+

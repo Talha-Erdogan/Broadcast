@@ -2,7 +2,7 @@
 @using Broadcast.Web.Business.Enums
 @using Broadcast.Web.Controllers
 
-@model Broadcast.Web.Models.New.AddViewModel
+@model Broadcast.Web.Models.Announcement.AddViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,11 +12,11 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <strong>New Edit </strong>
+                <strong>Announcement Edit </strong>
             </div>
             <div class="card-body">
 
-                @using (Html.BeginForm("Edit", "New", FormMethod.Post, new { @class = "form-horizontal input-sm", @enctype = "multipart/form-data", id = "formBroadcastAdd" }))
+                @using (Html.BeginForm("Edit", "Announcement", FormMethod.Post, new { @class = "form-horizontal input-sm", @enctype = "multipart/form-data", id = "formBroadcastAdd" }))
                 {
                     @Html.HiddenFor(m => m.SessionImageFileName)
                     @Html.HiddenFor(m => m.SessionGuid)
@@ -72,7 +72,7 @@
                                 <div style="color:red;">
                                     @Model.SessionImageFileName
                                 </div>
-                               
+                                
 
                             </div>
                         }
@@ -99,9 +99,9 @@
                                 <i class="fa fa-dot-circle-o"></i> Save
                             </button>
                             &nbsp;
-                            @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_LIST))
+                            @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_ANNOUNCEMENT_LIST))
                             {
-                                <a class="btn btn-sm btn-danger" href="~/New/List">
+                                <a class="btn btn-sm btn-danger" href="~/Announcement/List">
                                     <i class="fa fa-ban"></i> Cancel
                                 </a>
                             }
@@ -198,5 +198,5 @@
             $("#modalProcessing").modal("hide");
         }, 600);
     }
-</script>
+    </script>
 }
