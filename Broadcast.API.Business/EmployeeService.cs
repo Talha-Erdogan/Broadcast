@@ -40,6 +40,7 @@ namespace Broadcast.API.Business
                                 Email =e.Email,
                                 MobilePhone  = e.MobilePhone,
                                 TRNationalId =e.TRNationalId,
+                                UserName =e.UserName,
 
                                 Sex_NameTR = s==null ? String.Empty : s.NameTR,
                                 Sex_NameEN = s==null ? String.Empty : s.NameEN,
@@ -143,6 +144,8 @@ namespace Broadcast.API.Business
                                 Email = e.Email,
                                 MobilePhone = e.MobilePhone,
                                 TRNationalId = e.TRNationalId,
+                                UserName = e.UserName,
+                                Password = e.Password,
 
                                 Sex_NameTR = s == null ? String.Empty : s.NameTR,
                                 Sex_NameEN = s == null ? String.Empty : s.NameEN,
