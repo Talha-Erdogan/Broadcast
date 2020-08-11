@@ -130,7 +130,7 @@ namespace Broadcast.API.Controllers
             }
         }
 
-        [Route("{id}")]
+        [Route("{id}/getbyid")]
         [HttpGet]
         [TokenAuthorizeFilter]
         [ProducesResponseType(typeof(ApiResponseModel<Data.Entity.Broadcast>), (int)HttpStatusCode.OK)]
@@ -267,10 +267,10 @@ namespace Broadcast.API.Controllers
             try
             {
                 var record = new Data.Entity.Broadcast();
-                record.TitleTR = record.TitleTR;
-                record.TitleEN = record.TitleEN;
-                record.DescriptionTR = record.DescriptionTR;
-                record.DescriptionEN = record.DescriptionEN;
+                record.TitleTR = requestModel.TitleTR;
+                record.TitleEN = requestModel.TitleEN;
+                record.DescriptionTR = requestModel.DescriptionTR;
+                record.DescriptionEN = requestModel.DescriptionEN;
                 if (!String.IsNullOrEmpty(requestModel.ImageFilePath))
                 {
                     record.ImageFilePath = "BroadcastFiles/" + requestModel.ImageFilePath;
@@ -343,25 +343,25 @@ namespace Broadcast.API.Controllers
                 }
 
                 var record = new Data.Entity.Broadcast();
-                record.Id = requestModel.Id;
-                record.TitleTR = record.TitleTR;
-                record.TitleEN = record.TitleEN;
-                record.DescriptionTR = record.DescriptionTR;
-                record.DescriptionEN = record.DescriptionEN;
+                broadcast.Id = requestModel.Id;
+                broadcast.TitleTR = requestModel.TitleTR;
+                broadcast.TitleEN = requestModel.TitleEN;
+                broadcast.DescriptionTR = requestModel.DescriptionTR;
+                broadcast.DescriptionEN = requestModel.DescriptionEN;
                 if (!String.IsNullOrEmpty(requestModel.ImageFilePath))
                 {
-                    record.ImageFilePath = "BroadcastFiles/" + requestModel.ImageFilePath;
+                    broadcast.ImageFilePath = "BroadcastFiles/" + requestModel.ImageFilePath;
                 }
                 else
                 {
-                    record.ImageFilePath = broadcast.ImageFilePath;
+                    broadcast.ImageFilePath = broadcast.ImageFilePath;
                 }
-                record.VideoFileUrl = requestModel.VideoFileUrl;
-                record.ValidationEndDateTime = requestModel.ValidationEndDateTime;
-                record.ModifiedDateTime = DateTime.Now;
-                record.ModifiedBy = employeeId;
+                broadcast.VideoFileUrl = requestModel.VideoFileUrl;
+                broadcast.ValidationEndDateTime = requestModel.ValidationEndDateTime;
+                broadcast.ModifiedDateTime = DateTime.Now;
+                broadcast.ModifiedBy = employeeId;
 
-                var dbResult = _broadcastService.Update(record);
+                var dbResult = _broadcastService.Update(broadcast);
                 if (dbResult > 0)
                 {
                     responseModel.Data = record; // oluşturulan entity bilgisinde id kolonu atanmış olur ve entity geri gönderiliyor

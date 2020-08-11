@@ -1,0 +1,310 @@
+﻿@using Broadcast.Web.Business.Common
+@using Broadcast.Web.Business.Enums
+@using Broadcast.Web.Controllers
+
+@model Broadcast.Web.Models.New.ListViewModel
+
+@{
+    ViewData["Title"] = "New List";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> New List
+                @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_ADD))
+                {<span> - </span><a class="btn btn-sm btn-primary" href="~/New/Add">New Record </a>}
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        @using (Html.BeginForm("List", "New", FormMethod.Post, new { @class = "form-horizontal input-sm", @id = "filterForm" }))
+                        {
+                            <!-- form get'te submit yapilirken page bilgisi ve siralama bilgisinin tutulmasi icin -->
+                            @Html.HiddenFor(m => m.PageSize, new { @id = "hiddenPageSize" });
+                            @Html.HiddenFor(m => m.CurrentPage, new { @id = "hiddenCurrentPage" });
+                            @Html.HiddenFor(m => m.SortOn, new { @id = "hiddenSortOn" })
+                            @Html.HiddenFor(m => m.SortDirection, new { @id = "hiddenSortDirection" })
+                            @Html.HiddenFor(m => m.Filter.Filter_BroadcastTypeId)
+
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Title TR</label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(m => m.Filter.Filter_TitleTR, new { @class = "form-control form-control-sm" })
+                                    @Html.ValidationMessageFor(m => m.Filter.Filter_TitleTR, null, new { @class = "help-block text-danger" })
+                                </div>
+
+                                <label class="col-md-2 col-form-label">Title EN</label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(m => m.Filter.Filter_TitleEN, new { @class = "form-control form-control-sm" })
+                                    @Html.ValidationMessageFor(m => m.Filter.Filter_TitleEN, null, new { @class = "help-block text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Validation End Date Time</label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(m => m.Filter.Filter_ValidationEndDateTime, new { @class = "form-control form-control-sm date-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.Filter.Filter_ValidationEndDateTime, null, new { @class = "help-block text-danger" })
+                                </div>
+
+                                <label class="col-md-2 col-form-label">Is Active?</label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.Filter.Filter_IsActive, Model.FilterIsActiveSelectList, "Select All", new { @class = "form-control form-control-sm" })
+                                    @Html.ValidationMessageFor(m => m.Filter.Filter_IsActive, null, new { @class = "help-block text-danger" })
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-sm btn-primary" type="submit" name="SubmitType" value="List">
+                                        <i class="fa fa-search"></i> List
+                                    </button>
+                                    <hr />
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+                <div class="text-left small">
+                    Total Record: @Model.DataList.TotalCount Displaying Records: @Model.DataList.From - @Model.DataList.To
+                    <div class="float-right">
+                        <span>Page Size:</span> @Html.TextBox("txtPageSize", "", new { @class = "form-control form-control-sm d-inline-block onlyNumberEntry", @id = "txtPageSize", @style = " width:50px; height:calc(1.5em + 0.5rem - 2px);" })
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_DISPLAY))
+                                {
+                                    <th>Display</th>
+                                }
+
+                                @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_ACTIVEPASSIVE))
+                                {
+                                    <th>Active Or Passive</th>
+                                }
+                                @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_EDIT))
+                                {
+                                    <th>Edit</th>
+                                }
+
+                                <th>
+                                    <a href="javascript:void(0)" onclick="ClickSorting('Id','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
+                                        Id
+                                        @if (Model.DataList.SortOn == "Id")
+                                        {
+                                            if (Model.DataList.SortDirection == "ASC")
+                                            {<i class="fa fa-angle-up"></i> }
+                                            else
+                                            { <i class="fa fa-angle-down"></i>}
+                                        }
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)" onclick="ClickSorting('TitleTR','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
+                                        Title TR
+                                        @if (Model.DataList.SortOn == "TitleTR")
+                                        {
+                                            if (Model.DataList.SortDirection == "ASC")
+                                            {<i class="fa fa-angle-up"></i> }
+                                            else
+                                            { <i class="fa fa-angle-down"></i>}
+                                        }
+                                    </a>
+                                </th>
+
+                                <th>
+                                    <a href="javascript:void(0)" onclick="ClickSorting('TitleEN','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
+                                        Title EN
+                                        @if (Model.DataList.SortOn == "TitleEN")
+                                        {
+                                            if (Model.DataList.SortDirection == "ASC")
+                                            {<i class="fa fa-angle-up"></i> }
+                                            else
+                                            { <i class="fa fa-angle-down"></i>}
+                                        }
+                                    </a>
+                                </th>
+
+                                <th>
+                                    <a href="javascript:void(0)" onclick="ClickSorting('IsActive','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
+                                        Is Active?
+                                        @if (Model.DataList.SortOn == "IsActive")
+                                        {
+                                            if (Model.DataList.SortDirection == "ASC")
+                                            {<i class="fa fa-angle-up"></i> }
+                                            else
+                                            { <i class="fa fa-angle-down"></i>}
+                                        }
+                                    </a>
+                                </th>
+
+                                <th>
+                                    <a href="javascript:void(0)" onclick="ClickSorting('ValidationEndDateTime','@(Model.DataList.SortDirection == "ASC" ? "DESC" : "ASC")')">
+                                        Validation End Date Time
+                                        @if (Model.DataList.SortOn == "ValidationEndDateTime")
+                                        {
+                                            if (Model.DataList.SortDirection == "ASC")
+                                            {<i class="fa fa-angle-up"></i> }
+                                            else
+                                            { <i class="fa fa-angle-down"></i>}
+                                        }
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.DataList.Items)
+                            {
+                                <tr>
+                                    @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_DISPLAY))
+                                    {
+                                        <th>
+                                            <a class="btn btn-sm btn-info" href="~/New/Display/@item.Id">Display</a>
+                                        </th>
+                                    }
+
+                                    @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_ACTIVEPASSIVE))
+                                    {
+                                        if (@item.IsActive == true)
+                                        {
+                                            <th>
+                                                <a class="btn btn-sm btn-secondary" href="~/New/MakePassive/@item.Id">Make Passive</a>
+                                            </th>
+                                        }
+                                        else
+                                        {
+                                            <th>
+                                                <a class="btn btn-sm btn-warning" href="~/New/MakeActive/@item.Id">Make Active</a>
+                                            </th>
+                                        }
+                                    }
+                                    @if (SessionHelper.CheckAuthForCurrentUser(AuthCodeStatic.PAGE_NEWS_EDIT))
+                                    {
+                                        <th>
+                                            <a class="btn btn-sm btn-success" href="~/New/Edit/@item.Id">Edit</a>
+                                        </th>
+                                    }
+
+                                    <td>@item.Id</td>
+                                    <td>@item.TitleTR</td>
+                                    <td>@item.TitleEN</td>
+
+                                    <td>
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge badge-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">Passive</span>
+                                        }
+                                    </td>
+                                    <td>@item.ValidationEndDateTime.ToShortDateString() @item.ValidationEndDateTime.ToShortTimeString()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <nav>
+                    @await Html.PartialAsync("_PagingPartial", Model)
+                </nav>
+
+                @if (ViewBag.ErrorMessage != null && !string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                {
+                    <div class="text-danger">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+                @if (ViewBag.ErrorMessageList != null)
+                {
+                    <div class="text-danger">
+                        @foreach (var item in ViewBag.ErrorMessageList)
+                        {
+                            <span>@item</span>
+                            <br />
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+</div>
+
+@section Scripts {
+    <!-- pagesize ve current page js  -->
+    <script>
+        $(document).ready(function () {
+             // başlangıc: date-control class'ı eklenerek -> sayfadaki takvim scriptlerinin çalışması sağlanır.
+            moment.locale("@SessionHelper.CurrentLanguageTwoChar");
+
+
+            $.validator.messages.required = 'Is Required';
+            $(".date-control").daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: parseInt(moment().subtract(10, 'years').format('YYYY'),10),
+                maxYear: parseInt(moment().add(10, 'years').format('YYYY'), 10),
+                autoUpdateInput: false,
+                singleClasses: "",
+                locale: {}
+            });
+
+            $('.date-control').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('L'));
+            });
+
+            $('.date-control').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+
+
+            $('#txtPageSize').keyup(function () {
+                $('#hiddenPageSize').val($('#txtPageSize').val());
+            });
+
+            $('#txtPageSize').val(@((Model.PageSize)));
+
+            $('#txtCurrentPage').keyup(function () {
+                $('#hiddenCurrentPage').val($('#txtCurrentPage').val());
+            });
+
+            $('#txtCurrentPage').val(@((Model.CurrentPage)));
+
+            $(".onlyNumberEntry").keypress(function (e) {
+                if (e.which == 13) {
+                    $('#filterForm').submit();
+                }
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+                }
+            });
+        }); // end of $(document).ready
+
+        function ClickSorting(sortOn, sortDirection) {
+            $('#hiddenSortOn').val(sortOn);
+            $('#hiddenSortDirection').val(sortDirection);
+            //$("#btnSorting").click();
+            $('#filterForm').submit();
+        }
+
+        function ClickPaging(currentPage, pageSize) {
+            $('#hiddenCurrentPage').val(currentPage);
+            $('#hiddenPageSize').val(pageSize);
+            //$("#btnPaging").click();
+            $('#filterForm').submit();
+        }
+    </script>
+
+}

@@ -235,7 +235,5 @@ namespace Broadcast.API.Business
             }
             return result;
         }
-       
-
     }
 }

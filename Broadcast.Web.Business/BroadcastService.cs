@@ -29,7 +29,7 @@ namespace Broadcast.Web.Business
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
                 httpClient.DefaultRequestHeaders.Add("DisplayLanguage", displayLanguage);
                 HttpResponseMessage response = httpClient.GetAsync(string.Format("v1/Broadcasts?CurrentPage={0}&PageSize={1}&SortOn={2}&SortDirection={3}&BroadcastTypeId={4}&TitleTR={5}&TitleEN={6}&IsActive={7}&ValidationEndDateTime={8}",
-                   searchFilter.CurrentPage, searchFilter.PageSize, searchFilter.SortOn, searchFilter.SortDirection,  searchFilter.Filter_BroadcastTypeId, searchFilter.Filter_TitleTR, searchFilter.Filter_TitleEN, searchFilter.Filter_IsActive,  searchFilter.Filter_ValidationEndDateTimeAsString)).Result;
+                   searchFilter.CurrentPage, searchFilter.PageSize, searchFilter.SortOn, searchFilter.SortDirection, searchFilter.Filter_BroadcastTypeId, searchFilter.Filter_TitleTR, searchFilter.Filter_TitleEN, searchFilter.Filter_IsActive, searchFilter.Filter_ValidationEndDateTimeAsString)).Result;
 
                 result = response.Content.ReadAsJsonAsync<ApiResponseModel<PaginatedList<BroadcastWithDetail>>>().Result;
             }
@@ -47,7 +47,7 @@ namespace Broadcast.Web.Business
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
                 httpClient.DefaultRequestHeaders.Add("DisplayLanguage", displayLanguage);
-                HttpResponseMessage response = httpClient.GetAsync(string.Format("v1/Broadcasts/" + id)).Result;
+                HttpResponseMessage response = httpClient.GetAsync(string.Format("v1/Broadcasts/" + id + "/getbyid")).Result;
                 result = response.Content.ReadAsJsonAsync<ApiResponseModel<Broadcast.Web.Business.Models.Broadcast.Broadcast>>().Result;
             }
             return result;
@@ -172,7 +172,7 @@ namespace Broadcast.Web.Business
                 portalApiRequestModel.ModifiedDateTime = DateTime.Now;
                 portalApiRequestModel.BroadcastTypeId = editbroadcast.BroadcastTypeId;
 
-                HttpResponseMessage response = httpClient.PutAsJsonAsync(string.Format("v1/Broadcasts/" + portalApiRequestModel.Id ), portalApiRequestModel).Result;
+                HttpResponseMessage response = httpClient.PutAsJsonAsync(string.Format("v1/Broadcasts/" + portalApiRequestModel.Id), portalApiRequestModel).Result;
                 result = response.Content.ReadAsJsonAsync<ApiResponseModel<Broadcast.Web.Business.Models.Broadcast.Broadcast>>().Result;
             }
 
@@ -189,7 +189,7 @@ namespace Broadcast.Web.Business
             {
                 httpClient.BaseAddress = new Uri(ConfigHelper.ApiUrl);
                 httpClient.DefaultRequestHeaders.Accept.Clear();
-                httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue("application/json"));
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
                 httpClient.DefaultRequestHeaders.Add("DisplayLanguage", displayLanguage);
                 var portalApiRequestModel = new UpdateStatusRequestModel();
