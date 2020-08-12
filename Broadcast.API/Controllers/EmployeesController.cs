@@ -136,7 +136,7 @@ namespace Broadcast.API.Controllers
             {
                 var record = _employeeService.GetById(id);
                 record.TRNationalId = requestModel.TRNationalId;
-                record.Name = requestModel.LastName;
+                record.Name = requestModel.Name;
                 record.LastName = requestModel.LastName;
                 record.MobilePhone = requestModel.MobilePhone;
                 record.Email = requestModel.Email;

@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "ed936871-63e8-4f7d-b59a-10b5668d455e",
+		"name": "BroadcastGitHub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44340/api/v1/Authentication/Token",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44340",
+							"path": [
+								"api",
+								"v1",
+								"Authentication",
+								"Token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "News",
+			"item": [
+				{
+					"name": "news",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBc1VuaXhTZWNvbmRzIjoxNTk3MjQ0MDA5LCJJRCI6MSwibmFtZSI6IlRhbGhhIiwibGFzdE5hbWUiOiJFcmRvxJ9hbiIsImF1dGhDb2RlTGlzdEFzU3RyaW5nIjoiUEFHRV9BTk5PVU5DRU1FTlRfQUNUSVZFUEFTU0lWRSxQQUdFX0FOTk9VTkNFTUVOVF9FRElULFBBR0VfQU5OT1VOQ0VNRU5UX0FERCxQQUdFX0FOTk9VTkNFTUVOVF9ESVNQTEFZLFBBR0VfQU5OT1VOQ0VNRU5UX0xJU1QsUEFHRV9ORVdTX0FDVElWRVBBU1NJVkUsUEFHRV9ORVdTX0VESVQsUEFHRV9ORVdTX0FERCxQQUdFX05FV1NfRElTUExBWSxQQUdFX05FV1NfTElTVCxQQUdFX0VNUExPWUVFX0VESVQsUEFHRV9FTVBMT1lFRV9BREQsUEFHRV9FTVBMT1lFRV9ESVNQTEFZLFBBR0VfRU1QTE9ZRUVfTElTVCxQQUdFX1BST0ZJTEVERVRBSUxfQkFUQ0hFRElULFBBR0VfUFJPRklMRV9FRElULFBBR0VfUFJPRklMRV9BREQsUEFHRV9QUk9GSUxFX0RJU1BMQVksUEFHRV9QUk9GSUxFRU1QTE9ZRUVfQkFUQ0hFRElULFBBR0VfUFJPRklMRV9MSVNULFBBR0VfUFJPRklMRV9ERUxFVEUsUEFHRV9BVVRIX0VESVQsUEFHRV9BVVRIX0FERCxQQUdFX0FVVEhfRElTUExBWSxQQUdFX0FVVEhfTElTVCxQQUdFX0FVVEhfREVMRVRFIiwidG9rZW5HdWlkIjoiMjYwNzkwZDMtMmYwZC00ODUyLWIxMjEtMjI2YzY3YmMzZTUyIn0.Go82VQ0c_IwMKVleYthUAfVdaF26ppyoP9wT6nLFes0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44340/api/v1/broadcasts/news",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44340",
+							"path": [
+								"api",
+								"v1",
+								"broadcasts",
+								"news"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Announcement",
+			"item": [
+				{
+					"name": "announcements",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBc1VuaXhTZWNvbmRzIjoxNTk3MjQ0MDA5LCJJRCI6MSwibmFtZSI6IlRhbGhhIiwibGFzdE5hbWUiOiJFcmRvxJ9hbiIsImF1dGhDb2RlTGlzdEFzU3RyaW5nIjoiUEFHRV9BTk5PVU5DRU1FTlRfQUNUSVZFUEFTU0lWRSxQQUdFX0FOTk9VTkNFTUVOVF9FRElULFBBR0VfQU5OT1VOQ0VNRU5UX0FERCxQQUdFX0FOTk9VTkNFTUVOVF9ESVNQTEFZLFBBR0VfQU5OT1VOQ0VNRU5UX0xJU1QsUEFHRV9ORVdTX0FDVElWRVBBU1NJVkUsUEFHRV9ORVdTX0VESVQsUEFHRV9ORVdTX0FERCxQQUdFX05FV1NfRElTUExBWSxQQUdFX05FV1NfTElTVCxQQUdFX0VNUExPWUVFX0VESVQsUEFHRV9FTVBMT1lFRV9BREQsUEFHRV9FTVBMT1lFRV9ESVNQTEFZLFBBR0VfRU1QTE9ZRUVfTElTVCxQQUdFX1BST0ZJTEVERVRBSUxfQkFUQ0hFRElULFBBR0VfUFJPRklMRV9FRElULFBBR0VfUFJPRklMRV9BREQsUEFHRV9QUk9GSUxFX0RJU1BMQVksUEFHRV9QUk9GSUxFRU1QTE9ZRUVfQkFUQ0hFRElULFBBR0VfUFJPRklMRV9MSVNULFBBR0VfUFJPRklMRV9ERUxFVEUsUEFHRV9BVVRIX0VESVQsUEFHRV9BVVRIX0FERCxQQUdFX0FVVEhfRElTUExBWSxQQUdFX0FVVEhfTElTVCxQQUdFX0FVVEhfREVMRVRFIiwidG9rZW5HdWlkIjoiMjYwNzkwZDMtMmYwZC00ODUyLWIxMjEtMjI2YzY3YmMzZTUyIn0.Go82VQ0c_IwMKVleYthUAfVdaF26ppyoP9wT6nLFes0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44340/api/v1/broadcasts/announcements",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44340",
+							"path": [
+								"api",
+								"v1",
+								"broadcasts",
+								"announcements"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
