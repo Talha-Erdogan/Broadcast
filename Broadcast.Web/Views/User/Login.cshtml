@@ -76,7 +76,7 @@
                                             <i class="icon-lock"></i>
                                         </span>
                                     </div>
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control input-sm", placeholder = "Password" , value = Model.Password })
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control input-sm", placeholder = "Password", value = Model.Password })
 
                                 </div>
                                 <div class="row">
@@ -127,6 +127,18 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <div class="card bg-warning" style="margin-top:5px; color:black;">
+                    <div class="card-body text-center">
+                        <p class="card-text">
+                        <p>Sample User Of Roles:</p>
+                        <ul class="list-unstyled">
+                            <li>User Name: <strong>admin</strong> Password: <strong>1</strong> - System Admin Profile</li>
+                            <li>User Name: <strong>haber</strong> Password: <strong>1</strong> - News Management Profile</li>
+                            <li>User Name: <strong>duyuru</strong> Password: <strong>1</strong> - Announcement Management Profile</li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
